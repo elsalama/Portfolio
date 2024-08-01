@@ -80,3 +80,4 @@ if os.path.isfile(log_file_path):
 else:
     print("Log file not found. Please check directory and permissions.")
 
+
