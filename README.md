@@ -20,6 +20,9 @@ A basic banking system implemented in DSSL2, including account operations and cu
 ### [MNIST Neural Network](https://github.com/yourusername/Portfolio/tree/main/MNIST_Neural_Net)
 A Feedforward Neural Network to classify handwritten digits from the MNIST dataset, exploring the impact of various hyperparameters.
 
+### [Binary Heaps](https://github.com/elsalama/Portfolio/tree/main/Binary_Heaps)
+Implementation of a Priority Queue ADT using Binary Heaps in DSSL2, along with heap sort and various test cases.
+
 ## Skills
 - **Programming Languages:** JavaScript, C, C++, C#, Python, SQL, R, DrRacket, MATLAB
 - **Frameworks:** React, Node.js, Express, .NET Core
