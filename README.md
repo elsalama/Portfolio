@@ -1,6 +1,3 @@
-# Portfolio
-A portfolio of my projects and contributions
-
 # My GitHub Portfolio
 
 ## Introduction
@@ -11,11 +8,17 @@ Hi! I'm Elsa Lama, a passionate software developer specializing in software deve
 ### [Bayes Classifier](https://github.com/yourusername/Portfolio/tree/main/Bayes_Classifier)
 A Naive Bayes Classifier for sentiment analysis, implemented in Python.
 
-### [Data Analysis Project](https://github.com/yourusername/Portfolio/tree/main/Data_Analysis_Project)
-A project focused on analyzing large datasets to uncover insights and trends using Python, Pandas, and Matplotlib.
+### [Color Clustering and Cat Detection](https://github.com/yourusername/Portfolio/tree/main/Color_Clustering_and_Cat_Detection)
+A project involving clustering colors in images and detecting cats using Python.
 
-### [Cybersecurity Tool](https://github.com/yourusername/Portfolio/tree/main/Cybersecurity_Tool)
-Developed a tool to enhance security in web applications, utilizing JavaScript and Node.js.
+### [Dictionary ADT Implementation](https://github.com/yourusername/Portfolio/tree/main/Dictionary_ADT)
+Implementation of a Dictionary Abstract Data Type using Association Lists and Hash Tables in DSSL2.
+
+### [Banking System](https://github.com/yourusername/Portfolio/tree/main/Banking_System)
+A basic banking system implemented in DSSL2, including account operations and customer management.
+
+### [MNIST Neural Network](https://github.com/yourusername/Portfolio/tree/main/MNIST_Neural_Net)
+A Feedforward Neural Network to classify handwritten digits from the MNIST dataset, exploring the impact of various hyperparameters.
 
 ## Skills
 - **Programming Languages:** JavaScript, C, C++, C#, Python, SQL, R, DrRacket, MATLAB
