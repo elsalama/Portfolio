@@ -1,0 +1,240 @@
+#lang dssl2
+
+# HW3: Dictionaries
+
+import sbox_hash
+
+# A signature for the dictionary ADT. The contract parameters `K` and
+# `V` are the key and value types of the dictionary, respectively.
+interface DICT[K, V]:
+    # Returns the number of key-value pairs in the dictionary.
+    def len(self) -> nat?
+    # Is the given key mapped by the dictionary?
+    # Notation: `key` is the name of the parameter. `K` is its contract.
+    def mem?(self, key: K) -> bool?
+    # Gets the value associated with the given key; calls `error` if the
+    # key is not present.
+    def get(self, key: K) -> V
+    # Modifies the dictionary to associate the given key and value. If the
+    # key already exists, its value is replaced.
+    def put(self, key: K, value: V) -> NoneC
+    # Modifes the dictionary by deleting the association of the given key.
+    def del(self, key: K) -> NoneC
+    # The following method allows dictionaries to be printed
+    def __print__(self, print)
+
+struct assoc:
+    let key
+    let value
+    let next
+
+class AssociationList[K, V] (DICT):
+    let _head
+    let _size
+
+    def __init__(self):
+        self._head = None
+        self._size = 0
+
+    def __print__(self, print):
+        print("#<object:AssociationList head=%p>", self._head)
+
+    def len (self):
+        return self._size
+
+    def find (self, k):
+        let cur = self._head
+        while cur is not None:
+            if cur.key == k:
+                return cur
+            cur = cur.next
+        return False
+
+    def mem? (self, k):
+        let cur = self.find(k)
+        if cur is not False: return True
+        return False
+
+    def get (self, k):
+        let cur = self.find(k)
+        if cur is not False: return cur.value
+        error('AssociationList.get: key not found')
+
+    def put (self, k, v):
+        let cur = self.find(k)
+        if cur is not False:
+            cur.value = v
+            return
+        self._head = assoc(k, v, self._head)
+        self._size = self._size + 1
+
+    def del(self, k):
+        let cur = self._head
+        let prev = None
+        while cur is not None:
+            if cur.key == k:
+                if prev is not None:
+                    prev.next = cur.next
+                else:
+                    self._head = cur.next
+                self._size = self._size - 1
+                return
+            prev = cur
+            cur = cur.next
+
+test 'association list tests':
+    let a = AssociationList()
+    assert not a.mem?('hello')
+    a.put('hello', 5)
+    assert a.len() == 1
+    assert a.mem?('hello')
+    assert a.get('hello') == 5
+
+class HashTable[K, V] (DICT):
+    let _hash
+    let _size
+    let _data
+
+    def __init__(self, nbuckets: nat?, hash: FunC[AnyC, nat?]):
+        self._hash = hash
+        self._size = 0
+        self._data = [AssociationList() for _ in range(nbuckets)]
+
+    def __print__(self, print):
+        print("#<object:HashTable _hash=... _size=%p _data=%p>", self._size, self._data)
+
+    def _bucket(self, key: K) -> AssociationList?:
+        let hash_val = self._hash(key)
+        let bucket_idx = hash_val % self._data.len()
+        return self._data[bucket_idx]
+
+    def len(self) -> nat?:
+        return self._size
+
+    def mem?(self, key: K) -> bool?:
+        return self._bucket(key).mem?(key)
+
+    def get(self, key: K) -> V:
+        return self._bucket(key).get(key)
+
+    def put(self, key: K, value: V) -> NoneC:
+        if not self.mem?(key):
+            self._size = self._size + 1
+        self._bucket(key).put(key, value)
+
+    def del(self, key: K) -> NoneC:
+        if self.mem?(key):
+            self._size = self._size - 1
+        self._bucket(key).del(key)
+
+
+# first_char_hasher(String) -> Natural
+# A simple and bad hash function that just returns the ASCII code
+# of the first character.
+# Useful for debugging because it's easily predictable.
+def first_char_hasher(s: str?) -> int?:
+    if s.len() == 0:
+        return 0
+    else:
+        return int(s[0])
+
+test 'testing first_char_hasher':
+    assert first_char_hasher('') == 0
+    assert first_char_hasher('A') == 65
+    assert first_char_hasher('Apple') == 65
+    assert first_char_hasher('apple') == 97
+
+test 'Hash table tests':
+    let h = HashTable(10, make_sbox_hash())
+    assert not h.mem?('hello')
+    h.put('hello', 5)
+    assert h.len() == 1
+    assert h.mem?('hello')
+    assert h.get('hello') == 5
+
+def compose_menu(d: DICT!) -> DICT?:
+    d.put("Stevie", ["Masala dosa", "Indian"])
+    d.put("Branden", ["Apple Pie", "American"])
+    d.put("Sara", ["Channa masala", "Indian"])
+    d.put("Spencer", ["Kik Alicha", "Ethiopian"])
+    d.put("David", ["Choucroute", "French"])
+    return d
+
+test "AssociationList menu":
+    let a = AssociationList()
+    compose_menu(a)
+    assert a.get("Stevie")[1] == "Indian"
+
+test "HashTable menu":
+    let h = HashTable(10, make_sbox_hash())
+    compose_menu(h)
+    assert h.get("Branden")[1] == "American"
+    
+    
+test 'here are more tests for assoc list':
+    let a = AssociationList()
+    assert not a.mem?('goodbye')
+    a.put('goodbye', 5)
+    a.del('goodbye')
+    assert a.len() == 0
+    assert_error a.get('goodbye')
+    a.put('goodbye', 5)
+    a.put('goodbye', 49)
+    assert a.len() == 1
+    assert a.mem?('goodbye')
+    assert a.get('goodbye') == 49
+    a.put('animal', 2)
+    a.put('goodbye', 2)
+    assert a.get('goodbye') == 2
+    a.put('animal', 2)
+    assert a.get('animal') == 2
+    assert a.len() == 2
+    a.put('jupiter', 6)
+    a.put('java', 7)
+    a.put('lalaland', 9)
+    a.del('lalaland')
+    a.put(3, [True, False])
+    assert a.get(3) == [True, False]
+    assert not a.mem?('Bb')
+    a.del('animal')
+    assert not a.mem?('animal')
+    assert_error a.get('armadillo')
+    
+test 'here are more tests for hash':
+    let h = HashTable(10, make_sbox_hash())
+    assert not h.mem?('goodbye')
+    h.put('goodbye', 5)
+    h.del('goodbye')
+    assert h.len() == 0
+    assert_error h.get('goodbye')
+    h.put('goodbye', 5)
+    h.put('goodbye', 49)
+    assert h.len() == 1
+    assert h.mem?('goodbye')
+    assert h.get('goodbye') == 49
+    h.put('animal', 2)
+    h.put('goodbye', 2)
+    assert h.get('goodbye') == 2
+    h.put('animal', 2)
+    assert h.get('animal') == 2
+    assert h.len() == 2
+    h.put('jupiter', 6)
+    h.put('java', 7)
+    h.put('lalaland', 9)
+    h.del('lalaland')
+    h.put(3, [True, False])
+    assert h.get(3) == [True, False]
+    assert not h.mem?('lalaland')
+    h.del('animal')
+    assert not h.mem?('animal')
+    assert_error h.get('armadillo')
+    
+
+let eight_principles = ["Know your rights.",
+"Acknowledge your sources.",
+"Protect your work.",
+"Avoid suspicion.",
+"Do your own work.",
+"Never falsify a record or permit another person to do so.",
+"Never fabricate data, citations, or experimental results.",
+"Always tell the truth when discussing your work with your instructor."]
