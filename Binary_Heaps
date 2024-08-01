@@ -1,0 +1,316 @@
+#lang dssl2
+
+# HW5: Binary Heaps
+
+interface PRIORITY_QUEUE[X]:
+    # Returns the number of elements in the priority queue.
+    def len(self) -> nat?
+    # Returns the smallest element; error if empty.
+    def find_min(self) -> X
+    # Removes the smallest element; error if empty.
+    def remove_min(self) -> NoneC
+    # Inserts an element; error if full.
+    def insert(self, element: X) -> NoneC
+
+# Class implementing the PRIORITY_QUEUE ADT as a binary heap.
+class BinHeap[X] (PRIORITY_QUEUE):
+    let _data: VecC[OrC(X, NoneC)]
+    let _size: nat?
+    let _lt?:  FunC[X, X, bool?]
+
+    # Constructs a new binary heap with the given capacity and
+    # less-than function for type X.
+    def __init__(self, capacity, lt?):
+        if capacity <= 0: # Ensure that capacity is positive
+            error("Capacity must be a positive number!")
+        self._data = [None;capacity]
+        self._size = 0
+        self._lt? = lt?
+
+
+    def len(self) -> nat?:
+        return self._size
+
+    def find_min(self) -> X:
+        if self._size == 0:
+            error("Heap is empty!")
+        return self._data[0]
+
+    def insert(self, element: X) -> NoneC:
+        if self._size == len(self._data):
+            error("Heap is full!")
+        self._data[self._size] = element
+        self._bubble_up(self._size)
+        self._size = self._size + 1
+
+
+    def remove_min(self) -> NoneC:
+        if self._size == 0:
+            error("Heap is empty!")
+        self._data[0] = self._data[self._size - 1] 
+        self._size = self._size - 1
+        self._percolate_down(0)
+        
+
+
+    def _bubble_up(self, idx):
+        let parent = (idx - 1) // 2
+        while parent >= 0 and self._lt?(self._data[idx], self._data[parent]):
+            self._swap(idx, parent)
+            idx = parent
+            parent = (idx - 1) // 2
+
+
+    def _percolate_down(self, idx):
+        while idx * 2 + 1 < self._size:
+            let min_child = self._min_child(idx)
+            if self._lt?(self._data[min_child], self._data[idx]):
+                self._swap(idx, min_child)
+                idx = min_child
+            else:
+                break
+
+
+    def _min_child(self, idx):
+        if idx * 2 + 2 >= self._size:
+            return idx * 2 + 1
+        else:
+            if self._lt?(self._data[idx * 2 + 1], self._data[idx * 2 + 2]):
+                return idx * 2 + 1
+            else:
+                return idx * 2 + 2
+
+    def _swap(self, i, j):
+        let tmp = self._data[i]
+        self._data[i] = self._data[j]
+        self._data[j] = tmp
+
+
+
+# Other methods you may need can go here.
+
+
+# Woefully insufficient test.
+test 'insert, insert, remove_min':
+    # The `nat?` here means our elements are restricted to `nat?`s.
+    let h = BinHeap[nat?](10, λ x, y: x < y) 
+    h.insert(1)
+    assert h.find_min() == 1
+    
+
+
+test 'insert, insert, remove_min':
+    # The `nat?` here means our elements are restricted to `nat?`s.
+    let h = BinHeap[nat?](10, λ x, y: x < y) 
+    h.insert(2)
+    h.insert(3)
+    h.insert(4)
+    h.insert(5)
+    h.insert(1)
+    assert h.find_min() == 1
+    h.remove_min()
+     
+# Sorts a vector of Xs, given a less-than function for Xs.
+#
+# This function performs a heap sort by inserting all of the
+# elements of v into a fresh heap, then removing them in
+# order and placing them back in v.
+def heap_sort[X](v: VecC[X], lt?: FunC[X, X, bool?]) -> NoneC:
+    let h = BinHeap[X](len(v), lt?)
+    for i in range(len(v)):
+        h.insert(v[i])
+    for i in range(len(v)):
+        v[i] = h.find_min()
+        h.remove_min()
+
+
+test 'heap sort descending':
+    let v = [3, 6, 0, 2, 1]
+    heap_sort(v, λ x, y: x > y)
+    assert v == [6, 3, 2, 1, 0]
+
+
+
+# Sorting by birthday.
+
+struct person:
+    let name: str?
+    let birth_month: nat?
+    let birth_day: nat?
+    
+struct date:
+    let month: nat?
+    let day: nat?
+
+
+def earliest_birthday() -> str?:
+    let family = [
+        person("Vivi", 8, 7),
+        person("Katerina", 8, 25),
+        person("Pedro", 8, 12),
+        person("Katherine", 11, 12),
+        person("Pedro Juan", 12, 20)
+    ]
+
+    let birthdays = [None; family.len()] # Initialize an empty vector of the same length as family
+    for i, p in family:
+        birthdays[i] = date(p.birth_month, p.birth_day)
+
+    heap_sort(birthdays, λ x, y: x.month < y.month or x.month == y.month and x.day < y.day)
+
+
+    # Find the person with the earliest birthday
+    let earliest_date = birthdays[0]
+    for p in family:
+        if p.birth_month == earliest_date.month and p.birth_day == earliest_date.day:
+            return p.name
+    return None
+    
+
+
+
+test 'basic binheap - insert and remove':
+    let h = BinHeap[nat?](10, λ x, y: x < y)
+    h.insert(3)
+    h.insert(1)
+    h.insert(4)
+    assert h.find_min() == 1
+    h.remove_min()
+    assert h.find_min() == 3        
+       
+
+
+
+test 'advanced binheap - custom comparators and types':
+    let h_str = BinHeap[str?](3, λ x, y: len(x) < len(y))
+    h_str.insert("apple")
+    h_str.insert("banana")
+    assert h_str.find_min() == "apple"
+    
+    let h_date = BinHeap[date?](10, λ x, y: x.month < y.month or (x.month == y.month and x.day < y.day))
+    h_date.insert(date(8, 7))
+    h_date.insert(date(8, 25))
+    assert h_date.find_min() == date(8, 7)
+    
+test 'basic heapsort ascending':
+    let v_asc = [4, 2, 8, 1, 5]
+    heap_sort(v_asc, λ x, y: x < y)
+    assert v_asc == [1, 2, 4, 5, 8]
+
+test 'basic heapsort descending':
+    let v_desc = [4, 2, 8, 1, 5]
+    heap_sort(v_desc, λ x, y: x > y)
+    assert v_desc == [8, 5, 4, 2, 1]
+    
+test 'advanced heapsort with duplicates':
+    let v_dup = [4, 2, 4, 1, 4]
+    heap_sort(v_dup, λ x, y: x < y)
+    assert v_dup == [1, 2, 4, 4, 4]
+
+test 'advanced heapsort with custom comparators':
+    let v_str = ["apple", "banana", "avocado", "blueberry", "grape"]
+    heap_sort(v_str, λ x, y: len(x) < len(y))
+    assert v_str == ["apple", "grape", "banana", "avocado", "blueberry"]
+    
+# 1. Basic functionality
+test 'initialization and basic insert':
+    let h = BinHeap[nat?](10, λ x, y: x < y)
+    assert h.len() == 0
+    h.insert(5)
+    assert h.len() == 1
+    assert h.find_min() == 5
+
+test 'multiple inserts and find_min':
+    let h = BinHeap[nat?](10, λ x, y: x < y)
+    h.insert(3)
+    h.insert(1)
+    h.insert(4)
+    assert h.find_min() == 1
+
+test 'inserts and remove_min':
+    let h = BinHeap[nat?](10, λ x, y: x < y)
+    h.insert(3)
+    h.insert(1)
+    h.insert(4)
+    assert h.find_min() == 1
+    h.remove_min()
+    assert h.find_min() == 3
+
+# 2. Boundary cases
+
+test 'remove from empty heap':
+    let h = BinHeap[nat?](10, λ x, y: x < y)
+    assert_error h.remove_min()
+
+test 'insert into full heap':
+    let h = BinHeap[nat?](3, λ x, y: x < y)
+    h.insert(1)
+    h.insert(2)
+    h.insert(3)
+    assert_error h.insert(4)
+
+
+
+
+test 'boundary - insert maximum values':
+    let h = BinHeap[nat?](3, λ x, y: x < y)
+    h.insert(999999)
+    h.insert(999998)
+    h.insert(999997)
+    assert h.find_min() == 999997
+    h.remove_min()
+    assert h.find_min() == 999998
+    h.remove_min()
+    assert h.find_min() == 999999
+
+test 'boundary - insert minimum values':
+    let h = BinHeap[nat?](3, λ x, y: x < y)
+    h.insert(0)
+    h.insert(1)
+    h.insert(2)
+    assert h.find_min() == 0
+    h.remove_min()
+    assert h.find_min() == 1
+    h.remove_min()
+    assert h.find_min() == 2
+
+# 2. Stress Tests
+
+test 'stress - insert and remove many values':
+    let capacity = 1000
+    let h = BinHeap[nat?](capacity, λ x, y: x < y)
+    for i in range(capacity):
+        h.insert(i)
+    assert h.find_min() == 0
+    for i in range(capacity):
+        assert h.find_min() == i
+        h.remove_min()
+
+
+
+
+
+test 'misc - mixed operations':
+    let h = BinHeap[nat?](5, λ x, y: x < y)
+    h.insert(3)
+    h.insert(1)
+    h.insert(5)
+    assert h.find_min() == 1
+    h.insert(2)
+    h.remove_min()
+    assert h.find_min() == 2
+    h.remove_min()
+    assert h.find_min() == 3
+    h.insert(0)
+    assert h.find_min() == 0
+
+
+
+let eight_principles = ["Know your rights.",
+"Acknowledge your sources.",
+"Protect your work.",
+"Avoid suspicion.",
+"Do your own work.",
+"Never falsify a record or permit another person to do so.",
+"Never fabricate data, citations, or experimental results.",
+"Always tell the truth when discussing your work with your instructor."]
