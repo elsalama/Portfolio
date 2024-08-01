@@ -1,0 +1,227 @@
+#lang dssl2
+
+# HW1: DSSL2 Warmup
+
+###
+### ACCOUNTS
+###
+
+# an Account is either a checking or a saving account
+let account_type? = OrC("checking", "savings")
+
+class Account:
+    let id
+    let type
+    let balance
+
+    # Constructs an account with the given ID number, account type, and
+    # balance. The balance cannot be negative.
+    # Note: nat = natural number (0, 1, 2, ...)
+    def __init__(self, id, type, balance):
+        if balance < 0: error('Account: negative balance')
+        if not account_type?(type): error('Account: unknown type')
+        self.id = id
+        self.type = type
+        self.balance = balance
+
+    # .get_balance() -> num?
+    def get_balance(self): return self.balance
+
+    # .get_id() -> nat?
+    def get_id(self): return self.id
+
+    # .get_type() -> account_type?
+    def get_type(self): return self.type
+
+    # .deposit(num?) -> NoneC
+    # Deposits `amount` in the account. `amount` must be non-negative.
+    def deposit(self, amount):
+        let curr= self.balance
+        let new = curr + amount
+        self.balance = new
+        if amount < 0: error( 'Account: negative balance')
+
+    # .withdraw(num?) -> NoneC
+    # Withdraws `amount` from the account. `amount` must be non-negative
+    # and must not exceed the balance.
+    def withdraw(self, amount):
+       if amount < 0: error( 'Account: negative balance')
+       if amount > self.balance: error('Account: negative balance')
+       let curr = self.balance
+       let new = curr - amount
+       self.balance = new
+   
+
+    # .transfer(num?, Account?) -> NoneC
+    # Transfers the specified amount from this account to another. That is,
+    # it subtracts `amount` from this account's balance and adds `amount`
+    # to the `to` account's balance. `amount` must be non-negative.
+    def transfer(self, amount, to):
+        if amount < 0: error( 'Account: negative balance')
+        if self == to: error('transfering from one account to itself')
+        self.withdraw(amount)
+        to.deposit(amount)
+    
+
+# Test cases for Account#withdraw
+test 'Account#withdraw':
+    let account = Account(1, "savings", 100)
+    assert account.get_balance() == 100
+    account.withdraw(50)
+    assert account.get_balance() == 50
+    account.withdraw(25)
+    assert account.get_balance() == 25
+    assert_error account.withdraw(30)  # Trying to withdraw more than the balance
+    assert_error account.withdraw(-10)  # Trying to withdraw a negative amount
+
+# Test cases for Account#deposit
+test 'Account#deposit':
+    let account = Account(2, "checking", 0)
+    account.deposit(100)
+    assert account.get_balance() == 100
+    account.deposit(50)
+    assert account.get_balance() == 150
+    account.deposit(0)  # Depositing 0 shouldn't change the balance
+    assert account.get_balance() == 150
+    assert_error account.deposit(-10)  # Trying to deposit a negative amount
+
+# Test cases for Account#transfer
+test 'Account#transfer':
+    let account1 = Account(3, "checking", 200)
+    let account2 = Account(4, "savings", 50)
+    account1.transfer(100, account2)
+    assert account1.get_balance() == 100
+    assert account2.get_balance() == 150
+    account2.transfer(75, account1)
+    assert account1.get_balance() == 175
+    assert account2.get_balance() == 75
+    assert_error account1.transfer(200, account2)  # Trying to transfer more than the balance of the sender account
+    assert_error account2.transfer(100, account1)  # Trying to transfer more than the balance of the receiver account
+    assert_error account1.transfer(-50, account2)  # Trying to transfer a negative amount
+    
+
+###
+### CUSTOMERS
+###
+    
+
+# Customers have names and bank accounts.
+struct customer:
+    let name
+    let bank_account
+
+# max_account_id(VecC[customer?]) -> nat?
+# Find the largest account id used by any of the given customers' accounts.
+# Raise an error if no customers are provided.
+    
+def max_account_id(customers):
+    let max_id = None
+    for customer in customers:
+        if max_id is None or customer.bank_account.get_id() > max_id:
+            max_id = customer.bank_account.get_id()
+    if max_id is None:
+        error('max_account_id: no customers provided')
+    return max_id
+
+#   ^ YOUR CODE GOES HERE
+
+# open_account(str?, account_type?, VecC[customer?]) -> VecC[customer?]
+# Produce a new vector of customers, with a new customer added. That new
+# customer has the provided name, and their new account has the given type and
+# a balance of 0. The id of the new account should be one more than the current
+# maximum, or 1 for the first account created.
+
+def open_account(name, account_type, customers):
+    if customers.len() == 0:  # If the length of customers is 0
+        let new_id = 1
+        let new_account = Account(new_id, account_type, 0)
+        let new_customer = customer(name, new_account)
+        let new_customers = vec(customers.len() + 1) 
+        new_customers[customers.len()] = new_customer # adding the new costumer 
+        return new_customers
+    else:  # If the length of customers is > 0
+        let new_id = max_account_id(customers) + 1
+        let new_account = Account(new_id, account_type, 0)
+        let new_customer = customer(name, new_account)
+        let new_customers = vec(customers.len() + 1)  # Create new customers vector
+        for i in range(0, customers.len()):
+            new_customers[i] = customers[i] # Copy each element onto the new customers vector
+        new_customers[customers.len()] = new_customer # adding the new costumer 
+        return new_customers
+    
+    # code should be slipt into two, if the length of customers is < 0, if the length of costumers is > 0 then you have to > create new customers vector, loop through every single costumer and copy each element that over onto the new costumers vector, old costumers vectors length plus 1, 
+
+# check_sharing(VecC[customer?]) -> bool?
+# Checks whether any of the given customers share an account number.
+def check_sharing(customers):
+    if customers.len() == 0:
+        return False
+    let check = False
+    for i in range(customers.len()):
+        for j in range(i+1, customers.len()):
+            if customers[i].bank_account.get_id() == customers[j].bank_account.get_id():
+                check = True
+    return check
+
+    
+test'max_account_id':
+    let c1 = customer('ale', (Account(1, "savings",100)))
+    let c2 = customer('bora', (Account(1, "savings", 100)))
+    let c3 = customer('carmen', (Account(2, "checking",12)))
+    let c4 = customer('darren', (Account(3, "checking",10)))
+    let c5 = customer('elsa', (Account(4, "savings", 40)))
+    let c6 = customer('fred', (Account(4, "checking", 50)))
+    
+    assert max_account_id([c1,c2,c3,c4,c5,c6]) == 4
+
+    let customers_empty = []
+    assert_error max_account_id(customers_empty)
+
+
+test 'open_account':
+    let c1 = customer('ale', (Account(1, "savings",100)))
+    let c2 = customer('bora', (Account(1, "savings", 100)))
+    let c3 = customer('carmen', (Account(2, "checking",12)))
+    let c4 = customer('darren', (Account(3, "checking",10)))
+    let c5 = customer('elsa', (Account(4, "savings", 40)))
+    let c6 = customer('fred', (Account(4, "checking", 50)))
+    
+    let customers = [c1, c3, c5]
+    let new_customers = open_account('gina', 'checking', customers)
+    assert new_customers == [c1, c3, c5, customer('gina', Account(5, 'checking', 0))]
+
+    let empty_customers = []
+    assert open_account('jacob', 'savings', empty_customers)== [customer('jacob', Account(1,'savings', 0))]
+
+    let customers_same_id = [c1, c2]
+    let new_customers_same_id = open_account('hannah', 'checking', customers_same_id)
+    assert new_customers_same_id == [c1, c2, customer('hannah', Account(2, 'checking', 0))]
+
+    let customers_single = [c5]
+    let new_customers_single = open_account('isaac', 'savings', customers_single)
+    assert new_customers_single == [c5, customer('isaac', Account(5, 'savings', 0))]
+
+
+test 'check_sharing':
+    let c1 = customer('ale', (Account(1, "savings",100)))
+    let c2 = customer('bora', (Account(1, "savings", 100)))
+    let c3 = customer('carmen', (Account(2, "checking",12)))
+    let c4 = customer('darren', (Account(3, "checking",10)))
+    let c5 = customer('elsa', (Account(4, "savings", 40)))
+    let c6 = customer('fred', (Account(4, "checking", 50)))
+    
+    assert check_sharing([c1,c2,c3,c4,c5,c6]) == True
+    assert check_sharing([c1,c3,c5]) == False
+    assert check_sharing([c1,c2]) == True
+    assert check_sharing([c5]) == False 
+    
+    
+    
+let eight_principles = ["Know your rights.",
+"Acknowledge your sources.",
+"Protect your work.",
+"Avoid suspicion.",
+"Do your own work.",
+"Never falsify a record or permit another person to do so.",
+"Never fabricate data, citations, or experimental results.",
+"Always tell the truth when discussing your work with your instructor."]
