@@ -1,0 +1,188 @@
+/ Utilities for unpacking files
+// PackLab - CS213 - Northwestern University
+
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "unpack-utilities.h"
+
+
+// --- public functions ---
+
+void error_and_exit(const char* message) {
+  fprintf(stderr, "%s", message);
+  exit(1);
+}
+
+void* malloc_and_check(size_t size) {
+  void* pointer = malloc(size);
+  if (pointer == NULL) {
+    error_and_exit("ERROR: malloc failed\n");
+  }
+  return pointer;
+}
+
+void parse_header(uint8_t* input_data, size_t input_len, packlab_config_t* config) {
+    // Resetting all config fields
+    memset(config, 0, sizeof(*config));
+
+    // Define constants for header validation
+    const uint16_t expected_magic = 0x0213;
+    const uint8_t expected_version = 0x02;
+    const size_t min_header_length = 4; // minimum header length (magic, version, flags)
+
+    // Validate the minimum length of the header
+    if (input_len < min_header_length) {
+        config->is_valid = false;
+        return; // Immediate return after setting is_valid to false
+    }
+
+    // Validate Magic Bytes and Version
+    uint16_t magic = (input_data[0] << 8) | input_data[1];
+    uint8_t version = input_data[2];
+    if (magic != expected_magic || version != expected_version) {
+        config->is_valid = false;
+        return; // Immediate return after setting is_valid to false
+    }
+
+    // Decode Flags
+    uint8_t flags = input_data[3];
+    config->is_compressed = flags & 0x80; // check if the highest bit is set
+    config->is_encrypted = flags & 0x40;  // check if the second highest bit is set
+    config->is_checksummed = flags & 0x20;// check if the third highest bit is set
+
+    // Calculate expected total length of the header
+    size_t expected_header_length = min_header_length;
+    if (config->is_compressed) expected_header_length += 16; // Add dictionary length
+    if (config->is_checksummed) expected_header_length += 2; // Add checksum length
+
+    // Set the header length
+    config->header_len = expected_header_length;
+
+    // Check if the actual length is sufficient for the expected header
+    if (input_len < expected_header_length) {
+        config->is_valid = false;
+        return; // Immediate return after setting is_valid to false
+    }
+
+    // Read Compression Dictionary if file is compressed
+    if (config->is_compressed) {
+        memcpy(config->dictionary_data, &input_data[min_header_length], 16);
+    }
+
+    // Read Checksum if file is checksummed
+    if (config->is_checksummed) {
+        size_t checksum_offset = min_header_length;
+        if (config->is_compressed) {
+            checksum_offset += 16;
+        }
+        config->checksum_value = (input_data[checksum_offset] << 8) | input_data[checksum_offset + 1];
+    }
+
+    // Header is valid if all checks passed
+    config->is_valid = true;
+}
+
+uint16_t calculate_checksum(uint8_t* input_data, size_t input_len) {
+    uint16_t checksum = 0;
+    for (size_t i = 0; i < input_len; ++i) {
+        checksum += input_data[i];
+    }
+    return checksum;
+}
+
+
+uint16_t lfsr_step(uint16_t oldstate) {
+    // Access bits 0, 6, 9, and 13 (remembering that bit numbering starts from 0)
+    uint16_t bit0 = (oldstate >> 0) & 1;
+    uint16_t bit6 = (oldstate >> 6) & 1;
+    uint16_t bit9 = (oldstate >> 9) & 1;
+    uint16_t bit13 = (oldstate >> 13) & 1;
+
+    // Perform XOR operation on these bits
+    uint16_t new_bit = bit0 ^ bit6 ^ bit9 ^ bit13;
+
+    // Shift the old state to the right and place the new bit at the leftmost position
+    uint16_t newstate = (oldstate >> 1) | (new_bit << 15);
+
+    return newstate;
+}
+
+
+
+void decrypt_data(uint8_t* input_data, size_t input_len, 
+                  uint8_t* output_data, size_t output_len, 
+                  uint16_t encryption_key) {
+    // Check if output buffer is large enough
+    if (output_len < input_len) {
+        // Handle error: output buffer too small
+        return;
+    }
+
+    uint16_t lfsr_state = encryption_key;
+    for (size_t i = 0; i < input_len; i += 2) {
+        // Generate the next LFSR state
+        lfsr_state = lfsr_step(lfsr_state);
+
+        // XOR the least significant byte of LFSR state with the current input byte
+        output_data[i] = input_data[i] ^ (uint8_t)(lfsr_state & 0xFF);
+
+        // If there's another byte, XOR the most significant byte of LFSR state with it
+        if (i + 1 < input_len) {
+            output_data[i + 1] = input_data[i + 1] ^ (uint8_t)(lfsr_state >> 8);
+        }
+    }
+}
+
+
+size_t decompress_data(uint8_t* input_data, size_t input_len,
+                       uint8_t* output_data, size_t output_len,
+                       uint8_t* dictionary_data) {
+
+    size_t output_idx = 0;
+    size_t input_idx = 0;
+    const uint8_t escape_byte = 0x07;
+
+    while (input_idx < input_len && output_idx < output_len) {
+        uint8_t current_byte = input_data[input_idx++];
+
+        if (current_byte == escape_byte) {
+            // Make sure there is another byte for the escape sequence
+            if (input_idx >= input_len) {
+                // Treat the escape byte as a normal byte if it's the last byte in the input
+                if (output_idx < output_len) {
+                    output_data[output_idx++] = current_byte;
+                }
+                break;
+            }
+
+            uint8_t next_byte = input_data[input_idx++];
+            if (next_byte == 0x00) {
+                // Literal escape byte
+                if (output_idx < output_len) {
+                    output_data[output_idx++] = escape_byte;
+                }
+            } else {
+                // Run-length encoding
+                uint8_t repeat_count = (next_byte >> 4); 
+                uint8_t dictionary_index = next_byte & 0x0F;
+
+                for (uint8_t i = 0; i < repeat_count && output_idx < output_len; ++i) {
+                    output_data[output_idx++] = dictionary_data[dictionary_index];
+                }
+            }
+        } else {
+            // Normal byte, just copy over
+            if (output_idx < output_len) {
+                output_data[output_idx++] = current_byte;
+            }
+        }
+    }
+
+    return output_idx; // Length of decompressed data
+}
+
+
