@@ -1,0 +1,28 @@
+# Bayes Classifier
+
+## Introduction
+This project implements a Naive Bayes Classifier for sentiment analysis. It classifies text as either positive or negative based on word frequencies.
+
+## Project Files
+- `bayes_classifier.py`: Contains the implementation of the Bayes Classifier.
+
+## Usage
+
+### Training the Classifier
+To train the classifier, provide it with a list of strings where each string is in the format `sentiment|text`. Sentiment is '5' for positive and '1' for negative.
+
+```python
+from bayes_classifier import Bayes_Classifier
+
+# Initialize the classifier
+classifier = Bayes_Classifier()
+
+# Example training data
+training_data = [
+    '5|This movie was fantastic! I loved it.',
+    '1|This movie was terrible. I hated it.',
+    # Add more training data here
+]
+
+# Train the classifier
+classifier.train(training_data)
