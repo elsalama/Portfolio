@@ -1,28 +1,45 @@
-# Bayes Classifier
+import math
+import re
 
-## Introduction
-This project implements a Naive Bayes Classifier for sentiment analysis. It classifies text as either positive or negative based on word frequencies.
+class Bayes_Classifier:
 
-## Project Files
-- `bayes_classifier.py`: Contains the implementation of the Bayes Classifier.
+    def __init__(self):
+        self.positive_word_counts = {}
+        self.negative_word_counts = {}
+        self.total_positive_reviews = 0
+        self.total_negative_reviews = 0
+        self.total_positive_words = 0
+        self.total_negative_words = 0
+        self.vocab = set()
 
-## Usage
+    def train(self, lines):
+        for line in lines:
+            line = line.strip()
+            sentiment, _, text = line.partition('|')
+            words = re.findall(r'\b\w+\b', text.lower())
+            if sentiment == '5':
+                self.total_positive_reviews += 1
+                for word in words:
+                    self.positive_word_counts[word] = self.positive_word_counts.get(word, 0) + 1
+                    self.total_positive_words += 1
+            elif sentiment == '1':
+                self.total_negative_reviews += 1
+                for word in words:
+                    self.negative_word_counts[word] = self.negative_word_counts.get(word, 0) + 1
+                    self.total_negative_words += 1
+            self.vocab.update(words)
 
-### Training the Classifier
-To train the classifier, provide it with a list of strings where each string is in the format `sentiment|text`. Sentiment is '5' for positive and '1' for negative.
-
-```python
-from bayes_classifier import Bayes_Classifier
-
-# Initialize the classifier
-classifier = Bayes_Classifier()
-
-# Example training data
-training_data = [
-    '5|This movie was fantastic! I loved it.',
-    '1|This movie was terrible. I hated it.',
-    # Add more training data here
-]
-
-# Train the classifier
-classifier.train(training_data)
+    def classify(self, lines):
+        predictions = []
+        for line in lines:
+            line = line.strip()
+            _, _, text = line.partition('|')
+            words = re.findall(r'\b\w+\b', text.lower())
+            pos_log_prob = math.log(self.total_positive_reviews / (self.total_positive_reviews + self.total_negative_reviews))
+            neg_log_prob = math.log(self.total_negative_reviews / (self.total_positive_reviews + self.total_negative_reviews))
+            for word in words:
+                if word in self.vocab:
+                    pos_log_prob += math.log((self.positive_word_counts.get(word, 0) + 1) / (self.total_positive_words + len(self.vocab)))
+                    neg_log_prob += math.log((self.negative_word_counts.get(word, 0) + 1) / (self.total_negative_words + len(self.vocab)))
+            predictions.append('5' if pos_log_prob > neg_log_prob else '1')
+        return predictions
