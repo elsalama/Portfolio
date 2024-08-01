@@ -23,6 +23,9 @@ A Feedforward Neural Network to classify handwritten digits from the MNIST datas
 ### [Binary Heaps](https://github.com/elsalama/Portfolio/tree/main/Binary_Heaps)
 Implementation of a Priority Queue ADT using Binary Heaps in DSSL2, along with heap sort and various test cases.
 
+### [File Unpacking Utilities](https://github.com/elsalama/Portfolio/tree/main/File_Unpacking_Utilities)
+Utilities for unpacking files, including header parsing, checksum calculation, data decryption, and data decompression, implemented in C.
+
 ## Skills
 - **Programming Languages:** JavaScript, C, C++, C#, Python, SQL, R, DrRacket, MATLAB
 - **Frameworks:** React, Node.js, Express, .NET Core
