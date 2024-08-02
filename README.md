@@ -5,10 +5,10 @@ Hi! I'm Elsa Lama, a passionate software developer specializing in software deve
 
 ## Projects
 
-### [naive_bayes classifier](https://github.com/elsalama/Portfolio/tree/main/naive_bayes classifier)
+### [Naive Bayes Classifier](https://github.com/elsalama/Portfolio/tree/main/naive_bayes_classifier)
 A Naive Bayes Classifier for sentiment analysis, implemented in Python.
 
-### [color_clustering_cat_detection](https://github.com/elsalama/Portfolio/tree/main/color_clustering_cat_detection)
+### [Color Clustering Cat Detection](https://github.com/elsalama/Portfolio/tree/main/color_clustering_cat_detection)
 A project involving clustering colors in images and detecting cats using Python.
 
 ### [Dictionary ADT Implementation](https://github.com/elsalama/Portfolio/tree/main/Dictionary_ADT)
