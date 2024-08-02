@@ -2,7 +2,8 @@
 
 ## Overview
 
-This project is part of the Computer Programming II class. It processes Open Street Map (OSM) data to provide various functionalities like listing buildings, finding paths, and more. 
+This project is part of the Computer Programming II class. 
+It processes Open Street Map (OSM) data to provide various functionalities like listing buildings, finding paths, and more. 
 The project is implemented in C++ and makes use of various data structures and algorithms to achieve its goals.
 
 ## Features
