@@ -38,10 +38,10 @@ Graph algorithms implementation in C++, including various functionalities such a
 ### [XPos Server Security](https://github.com/elsalama/Portfolio/tree/main/XPos_Server_Security)
 Implemented security features to protect the XPos server by adding password protection and API key validation to prevent unauthorized access. Developed using C# and ASP.NET Core.
 
-### [Food Catcher Game](https://github.com/elsalama/Portfolio/tree/main/Food_Catcher_Game)
+### [Food Catcher Game](https://github.com/elsalama/Portfolio/tree/main/Raining_Tacos_Pizzas_Game)
 A simple game where the player catches falling food items using a trash bin, implemented with p5.js (JavaScript).
 
-### [Game_AI](https://github.com/elsalama/Portfolio/tree/main/Game_AI)
+### [Game AI](https://github.com/elsalama/Portfolio/tree/main/Game_AI)
 An AI-powered Tic-tac-toe game implementing Minimax and Minimax with Alpha-Beta Pruning algorithms to create an unbeatable AI, developed in Python.
 
 
