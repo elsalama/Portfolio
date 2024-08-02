@@ -18,7 +18,7 @@ Implementation of a Dictionary Abstract Data Type using Association Lists and Ha
 A basic banking system implemented in DSSL2, including account operations and customer management.
 
 ### [MNIST Neural Network](https://github.com/elsalama/Portfolio/tree/main/MNIST_Neural_Net)
-A Feedforward Neural Network to classify handwritten digits from the MNIST dataset, exploring the impact of various hyperparameters.
+A Feedforward Neural Network to classify handwritten digits from the MNIST dataset, exploring the impact of various hyperparameters. (Python)
 
 ### [Binary Heaps](https://github.com/elsalama/Portfolio/tree/main/Binary_Heaps)
 Implementation of a Priority Queue ADT using Binary Heaps in DSSL2, along with heap sort and various test cases.
