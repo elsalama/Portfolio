@@ -1,0 +1,46 @@
+# Food Catcher Game
+
+## Introduction
+This is a simple food catcher game I created baout 4 years ago where the player controls a trash bin to catch falling food items (tacos and pizzas) and avoid missing them. The game is built using p5.js, an easy-to-use JavaScript library for creating graphical and interactive experiences.
+
+## Game Description
+In this game, the player has to catch falling food items using a trash bin. The tacos give 1 point each, and the pizzas give 10 points each. The player has 5 lives, and the game is over if all lives are lost. The player can move the trash bin left and right using the 'A' and 'D' keys.
+
+## Project Structure
+- **index.html**: The main HTML file that includes the p5.js library and starts the game.
+- **style.css**: The CSS file for styling the game.
+- **p5.js**: The p5.js library.
+- **p5.sound.min.js**: The p5.sound library for sound functionalities.
+- **food.js**: JavaScript file containing the `Food` class.
+- **sketch.js**: JavaScript file containing the main game logic.
+- **trash.js**: JavaScript file containing the `Trash` class.
+- **taquito.png**: Image file for the taco.
+- **pizza.png**: Image file for the pizza.
+
+## How to Play
+1. Open the `index.html` file in a web browser.
+2. Use the 'A' key to move the trash bin left.
+3. Use the 'D' key to move the trash bin right.
+4. Catch the tacos and pizzas to increase your score.
+5. Avoid missing food items to prevent losing lives.
+
+## File Descriptions
+- **index.html**: Sets up the canvas and includes necessary scripts.
+- **style.css**: Provides basic styling for the game.
+- **p5.js**: Core library for rendering the game.
+- **p5.sound.min.js**: Library for adding sound functionalities.
+- **food.js**: Defines the `Food` class with methods for displaying and updating food items.
+- **sketch.js**: Main game file that initializes and runs the game loop.
+- **trash.js**: Defines the `Trash` class with methods for displaying and checking collision with food items.
+- **taquito.png**: Image of a taco.
+- **pizza.png**: Image of a pizza.
+
+## Running the Game
+To run the game, simply open `index.html` in a web browser. Ensure all other files are in the same directory as `index.html`.
+Also can use this link to Play https://editor.p5js.org/22lamaels1/full/c8HuaZvcA 
+## Contact Information
+- **Email**: elsalama2026@u.northwestern.edu
+- **Phone**: (773) 707-4068
+- **Location**: 619 University Pl, Evanston, IL 60201
+
+Feel free to reach out if you have any questions or suggestions.
