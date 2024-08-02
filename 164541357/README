@@ -1,0 +1,51 @@
+# Open Street Map Project
+
+## Overview
+
+This project is part of the Computer Programming II class. It processes Open Street Map (OSM) data to provide various functionalities like listing buildings, finding paths, and more. 
+The project is implemented in C++ and makes use of various data structures and algorithms to achieve its goals.
+
+## Features
+
+- Load and parse OSM data
+- List buildings
+- Find paths between nodes
+- Calculate distances
+- Memory management and error handling
+
+## Files
+
+### Source Files
+
+- **building.cpp**: Implementation of building-related functionalities.
+- **buildings.cpp**: Manages a collection of buildings.
+- **dist.cpp**: Contains functions for calculating distances.
+- **footway.cpp**: Implementation of footway-related functionalities.
+- **footways.cpp**: Manages a collection of footways.
+- **node.cpp**: Implementation of node-related functionalities.
+- **nodes.cpp**: Manages a collection of nodes.
+- **tinyxml2.cpp**: XML parsing library used for reading OSM data.
+- **main.cpp**: The main entry point of the application.
+
+### Header Files
+
+- **building.h**: Header file for building-related functionalities.
+- **buildings.h**: Header file for managing a collection of buildings.
+- **dist.h**: Header file for distance calculation functions.
+- **footway.h**: Header file for footway-related functionalities.
+- **footways.h**: Header file for managing a collection of footways.
+- **node.h**: Header file for node-related functionalities.
+- **nodes.h**: Header file for managing a collection of nodes.
+- **tinyxml2.h**: Header file for the XML parsing library.
+- **osm.h**: Header file for handling OSM data.
+
+### Metadata
+
+- **metadata.yml**: Contains metadata information for the project.
+
+## How to Run
+
+1. **Compile the code**:
+   Use the following command to compile the project:
+   ```sh
+   g++ -o osm_project main.cpp building.cpp buildings.cpp dist.cpp footway.cpp footways.cpp node.cpp nodes.cpp tinyxml2.cpp -I.
