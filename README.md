@@ -29,6 +29,12 @@ A multithreaded signal analysis program in C for detecting potential alien signa
 ### [File Unpacking Utilities](https://github.com/elsalama/Portfolio/tree/main/File_Unpacking_Utilities)
 Utilities for unpacking files, including header parsing, checksum calculation, data decryption, and data decompression, implemented in C.
 
+### [Open Street Map](https://github.com/elsalama/Portfolio/tree/main/Open_Street_Map)
+Processes Open Street Map (OSM) data to provide functionalities like listing buildings, finding paths, and more. Implemented in C++.
+
+### [Graph Implementation](https://github.com/elsalama/Portfolio/tree/main/Graph_Implementation)
+Graph algorithms implementation in C++, including various functionalities such as finding the shortest path, checking connectivity, and more.
+
 ## Skills
 - **Programming Languages:** JavaScript, C, C++, C#, Python, SQL, R, DrRacket, MATLAB
 - **Frameworks:** React, Node.js, Express, .NET Core
@@ -46,3 +52,4 @@ Utilities for unpacking files, including header parsing, checksum calculation, d
 - **Clubs:** Algorithmic Trading, Latin American Student Association, Women in Computing
 
 Feel free to explore my projects and reach out if you have any questions or opportunities.
+
