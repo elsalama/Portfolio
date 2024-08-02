@@ -38,6 +38,9 @@ Graph algorithms implementation in C++, including various functionalities such a
 ### [XPos Server Security](https://github.com/elsalama/Portfolio/tree/main/XPos_Server_Security)
 Implemented security features to protect the XPos server by adding password protection and API key validation to prevent unauthorized access. Developed using C# and ASP.NET Core.
 
+### [Food Catcher Game](https://github.com/yourusername/Portfolio/tree/main/Food_Catcher_Game)
+A simple game where the player catches falling food items using a trash bin, implemented with p5.js (JavaScript).
+
 ## Skills
 - **Programming Languages:** JavaScript, C, C++, C#, Python, SQL, R, DrRacket, MATLAB
 - **Frameworks:** React, Node.js, Express, .NET Core
