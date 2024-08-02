@@ -5,10 +5,10 @@ Hi! I'm Elsa Lama, a passionate software developer specializing in software deve
 
 ## Projects
 
-### [Bayes Classifier](https://github.com/elsalama/Portfolio/tree/main/Bayes_Classifier)
+### [naive_bayes classifier](https://github.com/elsalama/Portfolio/tree/main/naive_bayes classifier)
 A Naive Bayes Classifier for sentiment analysis, implemented in Python.
 
-### [Color Clustering and Cat Detection](https://github.com/elsalama/Portfolio/tree/main/Color_Clustering_and_Cat_Detection)
+### [color_clustering_cat_detection](https://github.com/elsalama/Portfolio/tree/main/color_clustering_cat_detection)
 A project involving clustering colors in images and detecting cats using Python.
 
 ### [Dictionary ADT Implementation](https://github.com/elsalama/Portfolio/tree/main/Dictionary_ADT)
@@ -41,7 +41,7 @@ Implemented security features to protect the XPos server by adding password prot
 ### [Food Catcher Game](https://github.com/elsalama/Portfolio/tree/main/Food_Catcher_Game)
 A simple game where the player catches falling food items using a trash bin, implemented with p5.js (JavaScript).
 
-### [Tic-tac-toe AI](https://github.com/elsalama/Portfolio/tree/main/Game-AI)
+### [Game_AI](https://github.com/elsalama/Portfolio/tree/main/Game-AI)
 An AI-powered Tic-tac-toe game implementing Minimax and Minimax with Alpha-Beta Pruning algorithms to create an unbeatable AI, developed in Python.
 
 
