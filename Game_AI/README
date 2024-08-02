@@ -1,0 +1,24 @@
+# Tic-tac-toe AI
+
+## Introduction
+This project involves creating an AI-powered Tic-tac-toe game that is difficult, if not impossible, for humans to beat. 
+  The AI is implemented using the Minimax algorithm, with and without Alpha-Beta Pruning, to enhance the AI's efficiency and performance.
+
+## Features
+- **Minimax Algorithm:** Implements the Minimax algorithm to evaluate the best possible moves for the AI.
+- **Alpha-Beta Pruning:** Enhances the Minimax algorithm with Alpha-Beta Pruning to improve performance by reducing the number of nodes evaluated.
+- **Multiple Game Modes:**
+  - Human vs. Human
+  - Human vs. AI (Human first)
+  - AI vs. Human (AI first)
+  - AI vs. AI
+
+## Project Structure
+- `main.py`: The main script that initializes the game and manages different game modes.
+- `tictactoe.py`: Contains the TicTacToe class that implements the game board and related functions.
+- `test.py`: Includes test cases to validate the correctness of the Minimax and Minimax with Alpha-Beta Pruning implementations.
+
+## Files
+- **main.py**
+  ```python
+  # Your main.py content here
