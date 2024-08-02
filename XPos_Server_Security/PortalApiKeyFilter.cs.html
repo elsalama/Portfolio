@@ -1,0 +1,63 @@
+<html>
+<head>
+<title>PortalApiKeyFilter.cs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #6c95eb;}
+.s1 { color: #d0d0d0;}
+.s2 { color: #bdbdbd;}
+.s3 { color: #c9a26d;}
+</style>
+</head>
+<body bgcolor="#262626">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+PortalApiKeyFilter.cs</font>
+</center></td></tr></table>
+<pre><span class="s0">using </span><span class="s1">System</span><span class="s2">.</span><span class="s1">Linq</span><span class="s2">;</span>
+<span class="s0">using </span><span class="s1">System</span><span class="s2">.</span><span class="s1">Net</span><span class="s2">;</span>
+<span class="s0">using </span><span class="s1">System</span><span class="s2">.</span><span class="s1">Threading</span><span class="s2">.</span><span class="s1">Tasks</span><span class="s2">;</span>
+<span class="s0">using </span><span class="s1">Microsoft</span><span class="s2">.</span><span class="s1">AspNetCore</span><span class="s2">.</span><span class="s1">Http</span><span class="s2">;</span>
+<span class="s0">using </span><span class="s1">Microsoft</span><span class="s2">.</span><span class="s1">AspNetCore</span><span class="s2">.</span><span class="s1">Mvc</span><span class="s2">.</span><span class="s1">Filters</span><span class="s2">;</span>
+<span class="s0">using </span><span class="s1">xpos_admin_business</span><span class="s2">.</span><span class="s1">Services</span><span class="s2">;</span>
+
+<span class="s0">namespace </span><span class="s1">xpos_admin_api</span><span class="s2">.</span><span class="s1">Endpoints</span><span class="s2">.</span><span class="s1">EndpointFilters</span>
+<span class="s2">{</span>
+    <span class="s0">public class </span><span class="s1">PortalApiKeyFilter : IAsyncActionFilter</span>
+    <span class="s2">{</span>
+        
+        <span class="s0">private readonly </span><span class="s1">IXposService _xposService</span><span class="s2">;</span>
+
+        <span class="s0">public </span><span class="s1">PortalApiKeyFilter</span><span class="s2">(</span><span class="s1">IXposService xposService</span><span class="s2">, </span><span class="s0">string </span><span class="s1">expectedApiKey</span><span class="s2">)</span>
+        <span class="s2">{</span>
+            <span class="s1">_xposService </span><span class="s2">= </span><span class="s1">xposService</span><span class="s2">;</span>
+           
+        <span class="s2">}</span>
+
+        <span class="s0">public </span><span class="s1">async Task OnActionExecutionAsync</span><span class="s2">(</span><span class="s1">ActionExecutingContext context</span><span class="s2">, </span><span class="s1">ActionExecutionDelegate next</span><span class="s2">)</span>
+        <span class="s2">{</span>
+            <span class="s1">var headers </span><span class="s2">= </span><span class="s1">context</span><span class="s2">.</span><span class="s1">HttpContext</span><span class="s2">.</span><span class="s1">Request</span><span class="s2">.</span><span class="s1">Headers</span><span class="s2">;</span>
+
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">!headers</span><span class="s2">.</span><span class="s1">ContainsKey</span><span class="s2">(</span><span class="s3">&quot;Portal-ApiKey&quot;</span><span class="s2">))</span>
+            <span class="s2">{</span>
+                <span class="s1">context</span><span class="s2">.</span><span class="s1">HttpContext</span><span class="s2">.</span><span class="s1">Response</span><span class="s2">.</span><span class="s1">StatusCode </span><span class="s2">= (</span><span class="s0">int</span><span class="s2">)</span><span class="s1">HttpStatusCode</span><span class="s2">.</span><span class="s1">Unauthorized</span><span class="s2">;</span>
+                <span class="s1">await context</span><span class="s2">.</span><span class="s1">HttpContext</span><span class="s2">.</span><span class="s1">Response</span><span class="s2">.</span><span class="s1">WriteAsync</span><span class="s2">(</span><span class="s3">&quot;API key header is missing&quot;</span><span class="s2">);</span>
+                <span class="s0">return</span><span class="s2">;</span>
+            <span class="s2">}</span>
+
+            <span class="s1">var apiKey </span><span class="s2">= </span><span class="s1">headers</span><span class="s2">[</span><span class="s3">&quot;Portal-ApiKey&quot;</span><span class="s2">].</span><span class="s1">FirstOrDefault</span><span class="s2">();</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">apiKey </span><span class="s2">!= </span><span class="s1">Environment</span><span class="s2">.</span><span class="s1">GetEnvironmentVariable</span><span class="s2">(</span><span class="s3">&quot;PORTAL_APIKEY&quot;</span><span class="s2">))</span>
+            <span class="s2">{</span>
+                <span class="s1">context</span><span class="s2">.</span><span class="s1">HttpContext</span><span class="s2">.</span><span class="s1">Response</span><span class="s2">.</span><span class="s1">StatusCode </span><span class="s2">= (</span><span class="s0">int</span><span class="s2">)</span><span class="s1">HttpStatusCode</span><span class="s2">.</span><span class="s1">Unauthorized</span><span class="s2">;</span>
+                <span class="s1">await context</span><span class="s2">.</span><span class="s1">HttpContext</span><span class="s2">.</span><span class="s1">Response</span><span class="s2">.</span><span class="s1">WriteAsync</span><span class="s2">(</span><span class="s3">&quot;Invalid API key&quot;</span><span class="s2">);</span>
+                <span class="s0">return</span><span class="s2">;</span>
+            <span class="s2">}</span>
+
+            <span class="s1">await next</span><span class="s2">();</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>
