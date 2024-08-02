@@ -5,10 +5,10 @@ Hi! I'm Elsa Lama, a passionate software developer specializing in software deve
 
 ## Projects
 
-### [Naive Bayes Classifier](https://github.com/elsalama/Portfolio/tree/main/naive_bayes_classifier)
+### [Naive Bayes Classifier](https://github.com/elsalama/Portfolio/tree/main/naive-bayes-classifier)
 A Naive Bayes Classifier for sentiment analysis, implemented in Python.
 
-### [Color Clustering Cat Detection](https://github.com/elsalama/Portfolio/tree/main/color_clustering_cat_detection)
+### [Color Clustering Cat Detection](https://github.com/elsalama/Portfolio/tree/main/color-clustering-cat-detection)
 A project involving clustering colors in images and detecting cats using Python.
 
 ### [Dictionary ADT Implementation](https://github.com/elsalama/Portfolio/tree/main/Dictionary_ADT)
@@ -29,7 +29,7 @@ A multithreaded signal analysis program in C for detecting potential alien signa
 ### [File Unpacking Utilities](https://github.com/elsalama/Portfolio/tree/main/File_Unpacking_Utilities)
 Utilities for unpacking files, including header parsing, checksum calculation, data decryption, and data decompression, implemented in C.
 
-### [Open Street Map](https://github.com/elsalama/Portfolio/tree/main/Open_Street_Map)
+### [Open Street Map](https://github.com/elsalama/Portfolio/tree/main/Open_Street_Map_Project)
 Processes Open Street Map (OSM) data to provide functionalities like listing buildings, finding paths, and more. Implemented in C++.
 
 ### [Graph Implementation](https://github.com/elsalama/Portfolio/tree/main/Graph_Implementation)
@@ -41,7 +41,7 @@ Implemented security features to protect the XPos server by adding password prot
 ### [Food Catcher Game](https://github.com/elsalama/Portfolio/tree/main/Food_Catcher_Game)
 A simple game where the player catches falling food items using a trash bin, implemented with p5.js (JavaScript).
 
-### [Game_AI](https://github.com/elsalama/Portfolio/tree/main/Game-AI)
+### [Game_AI](https://github.com/elsalama/Portfolio/tree/main/Game_AI)
 An AI-powered Tic-tac-toe game implementing Minimax and Minimax with Alpha-Beta Pruning algorithms to create an unbeatable AI, developed in Python.
 
 
