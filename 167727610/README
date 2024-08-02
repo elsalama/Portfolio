@@ -1,0 +1,69 @@
+Graph Implementation and Testing
+Project Overview
+This project involves the implementation of a graph data structure using an adjacency list, along with a comprehensive set of tests to validate its functionality. 
+The primary goal is to demonstrate efficient management of vertices and edges in a graph, and to ensure robustness through thorough testing.
+
+Files in the Project
+graph.h
+graph.cpp
+main.cpp
+metadata.yml
+1. graph.h
+This header file defines the graph class. The class uses an adjacency list to represent the graph, with the vertices stored as strings and the edges as doubles.
+
+Key Features:
+Technologies Used: C++, Google Test
+Data Members:
+
+Vertices: A vector to store the vertex names.
+Edges: A vector of maps to store the adjacency list, where each map entry contains a neighbor's index and the corresponding edge weight.
+Vertex2Index: A map to associate each vertex name with its index for efficient lookup.
+EdgeCount: An integer to keep track of the number of edges.
+Member Functions:
+
+graph(): Constructor initializing the edge count to zero.
+NumVertices() const: Returns the number of vertices.
+NumEdges() const: Returns the number of edges.
+addVertex(std::string v): Adds a vertex to the graph.
+addEdge(std::string from, std::string to, double weight): Adds an edge between two vertices.
+getWeight(std::string from, std::string to, double &weight) const: Retrieves the weight of an edge between two vertices.
+2. graph.cpp
+This implementation file provides the definitions of the member functions declared in graph.h.
+
+Implementation Details:
+
+Constructor and Member Functions:
+graph(): Initializes the edge count to zero.
+NumVertices() const and NumEdges() const: Return the size of the Vertices vector and the EdgeCount, respectively.
+addVertex(std::string v): Checks if the vertex exists. If not, adds the vertex to the Vertices vector and updates the Vertex2Index map and Edges vector.
+addEdge(std::string from, std::string to, double weight): Adds an edge between the vertices if they exist, updating the adjacency list and the edge count.
+getWeight(std::string from, std::string to, double &weight) const: Retrieves the edge weight if the vertices exist.
+3. main.cpp
+This file contains the test cases for the graph implementation using the Google Test framework.
+
+Test Cases:
+
+Basic Functionality Tests:
+basic add and check: Tests adding vertices and edges and verifying their existence.
+Vertex and Edge Count Tests:
+vertex count: Tests the number of vertices added to the graph.
+edge count: Tests the number of edges added to the graph.
+Weight Retrieval Tests:
+wheight getting: Tests retrieving the weight of an edge.
+Graph Clearing Tests:
+clear graph: Tests clearing the graph of all vertices and edges.
+Stress Test:
+stresstest: Tests adding a million vertices and edges to the graph to check performance and robustness.
+4. metadata.yml
+This metadata file contains submission information, including the submitter's name and email, creation time, status, and score.
+
+
+Contents:
+
+ID: 167727610
+Submitters:
+Name: Elsa Viviana Lama
+Email: elsalama2026@u.northwestern.edu
+Created At: March 10, 2023, 02:45:23 AM (Los Angeles Time Zone)
+Status: Processed
+Score: 100.0
