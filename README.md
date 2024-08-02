@@ -26,7 +26,7 @@ Implementation of a Priority Queue ADT using Binary Heaps in DSSL2, along with h
 ### [Signal Analysis](https://github.com/elsalama/Portfolio/tree/main/Signal_Analysis)
 A multithreaded signal analysis program in C for detecting potential alien signals within specific frequency bands.
 
-### [File Unpacking Utilities](https://github.com/elsalama/Portfolio/tree/main/File_Unpacking_Utilities)
+### [File Unpacking Utilities](https://github.com/elsalama/Portfolio/tree/main/FIle_Unpacking_Utilities)
 Utilities for unpacking files, including header parsing, checksum calculation, data decryption, and data decompression, implemented in C.
 
 ### [Open Street Map](https://github.com/elsalama/Portfolio/tree/main/Open_Street_Map_Project)
