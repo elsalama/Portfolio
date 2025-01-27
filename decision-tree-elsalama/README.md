@@ -1,49 +1,30 @@
+# Decision Tree Implementation
 
-## Decision Tree Implementation
-Overview
-This project implements a decision tree for classification tasks in Python. The decision tree is built recursively, splitting data based on the best attribute and threshold determined by information gain. It also includes functionality to handle edge cases like homogeneous labels or missing data.
+## Overview
+This project implements a **decision tree** for classification tasks in Python. The decision tree is built recursively, splitting data based on the best attribute and threshold determined by **information gain**. It also includes functionality to handle edge cases like homogeneous labels or missing data.
 
-Features
-Recursive construction of a decision tree.
-Handles both binary and continuous attributes.
-Computes information gain to determine the best split.
-Includes functionality to handle:
-Homogeneous labels.
-Missing or empty datasets.
-Predefined depth limits for tree construction.
-Supports weighted accuracy calculation for better splits.
-Folder Structure
-perl
-Copy
-Edit
-project/
-│
-├── data/
-│   ├── xor-easy.csv
-│   ├── majority-rule.csv
-│   └── other datasets
-│
-├── src/
-│   ├── decision_tree.py  # Main implementation
-│   ├── metrics.py        # Helper functions for accuracy, mode calculations, etc.
-│   ├── predict_mode.py   # Comparison function
-│   ├── numpy_practice.py # Experimentation with NumPy
-│   └── data.py           # Data preprocessing
-│
-├── tests/
-│   └── test_decision_tree.py  # Unit tests for the decision tree
-│
-└── README.md  # Project documentation
-Getting Started
-Prerequisites
-Python 3.8 or higher
-Required libraries:
-numpy
+## Features
+- Recursive construction of a decision tree.
+- Handles both **binary** and **continuous** attributes.
+- Computes **information gain** to determine the best split.
+- Includes functionality to handle:
+  - Homogeneous labels.
+  - Missing or empty datasets.
+  - Predefined depth limits for tree construction.
+- Supports weighted accuracy calculation for better splits.
+
+## Folder Structure
+project/ │ ├── data/ │ ├── xor-easy.csv │ ├── majority-rule.csv │ └── other datasets │ ├── src/ │ ├── decision_tree.py # Main implementation │ ├── metrics.py # Helper functions for accuracy, mode calculations, etc. │ ├── predict_mode.py # Comparison function │ ├── numpy_practice.py # Experimentation with NumPy │ └── data.py # Data preprocessing │ ├── tests/ │ └── test_decision_tree.py # Unit tests for the decision tree │ └── README.md # Project documentation
+
+## Getting Started
+
+### Prerequisites
+- Python 3.8 or higher
+- Required libraries:
+  - `numpy`
+
 Install dependencies:
-
-bash
-Copy
-Edit
+```bash
 pip install numpy
 Usage
 Clone the repository:
@@ -98,4 +79,10 @@ Expand the decision tree to handle multiclass classification.
 Implement parallel processing for large datasets.
 License
 This project is licensed under the MIT License. See the LICENSE file for details.
+
+sql
+Copy
+Edit
+
+When you paste this into your `README.md` file and commit it to your GitHub repository, it will render properly with all formatting intact. Let me know if you have any other questions or need further adjustments!
 
