@@ -43,6 +43,8 @@ A simple game where the player catches falling food items using a trash bin, imp
 
 ### [Game AI](https://github.com/elsalama/Portfolio/tree/main/Game_AI)
 An AI-powered Tic-tac-toe game implementing Minimax and Minimax with Alpha-Beta Pruning algorithms to create an unbeatable AI, developed in Python.
+### Decision Tree Implementation
+A decision tree implementation in Python, capable of recursively building and evaluating decision trees for classification tasks. Includes functionality for information gain calculation, data splitting, and handling edge cases like homogeneous labels or missing data.
 
 
 ## Skills
