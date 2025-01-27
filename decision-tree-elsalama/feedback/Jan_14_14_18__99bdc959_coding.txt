@@ -1,0 +1,46 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.1, pytest-8.3.4, pluggy-1.5.0
+rootdir: /workspace
+collected 21 items
+tests/test_a_environment.py .                                            [  4%]
+tests/test_a_setup.py ..                                                 [ 14%]
+tests/test_data.py .F.                                                   [ 28%]
+tests/test_decision_tree.py ....FF                                       [ 57%]
+tests/test_experiment.py .F                                              [ 66%]
+tests/test_metrics.py .                                                  [ 71%]
+tests/test_numpy.py ......                                               [100%]
+=================================== FAILURES ===================================
+____________________________ test_train_test_split _____________________________
+>       assert np.isclose(np.mean(y_train), 0.5079365079365079), np.mean(y_train)
+E       AssertionError: np.float64(-32.704841713221604)
+E       assert np.False_
+E        +  where np.False_ = <function isclose at 0x7f76d4ed54b0>(np.float64(-32.704841713221604), 0.5079365079365079)
+E        +    where <function isclose at 0x7f76d4ed54b0> = np.isclose
+E        +    and   np.float64(-32.704841713221604) = <function mean at 0x7f76d4ece430>(array([[ 18.95949721],\n       [ 24.91852886],\n       [ 28.64292365],\n       [ 38.32635009],\n       [ 36.83659218],\n   ...3],\n       [-85.3235568 ],\n       [-65.95670391],\n       [-71.91573557],\n       [-66.70158287],\n       [-65.95670391]]))
+E        +      where <function mean at 0x7f76d4ece430> = np.mean
+tests/test_data.py:45: AssertionError
+___________________________ test_decision_tree_run1 ____________________________
+>       help_decision_tree_run(order)
+tests/test_decision_tree.py:161:
+>                   assert accuracy >= goal, message
+E                   AssertionError: On xor-easy.csv dataset with fraction 1.0, expected 1.00 but got 0.500
+E                   assert np.float64(0.5) >= 1.0
+tests/test_decision_tree.py:150: AssertionError
+___________________________ test_decision_tree_run2 ____________________________
+>       help_decision_tree_run(order)
+tests/test_decision_tree.py:172:
+>                   assert accuracy >= goal, message
+E                   AssertionError: On majority-rule.csv dataset with fraction 1.0, expected 1.00 but got 0.549
+E                   assert np.float64(0.548828125) >= 1.0
+tests/test_decision_tree.py:150: AssertionError
+_______________________________ test_comparisons _______________________________
+>               assert acc_a > acc_b, message
+E               AssertionError: decision_tree should beat predict_mode in comparion #1, but 0.549 <= 0.656. See tests/test_experiment.py for details
+E               assert np.float64(0.548828125) > np.float64(0.65625)
+tests/test_experiment.py:94: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_data.py::test_train_test_split - AssertionError: np.float64...
+FAILED tests/test_decision_tree.py::test_decision_tree_run1 - AssertionError:...
+FAILED tests/test_decision_tree.py::test_decision_tree_run2 - AssertionError:...
+FAILED tests/test_experiment.py::test_comparisons - AssertionError: decision_...
+========================= 4 failed, 17 passed in 3.22s =========================

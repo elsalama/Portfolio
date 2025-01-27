@@ -1,0 +1,109 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.1, pytest-8.3.4, pluggy-1.5.0
+rootdir: /workspace
+collected 21 items
+tests/test_a_environment.py .                                            [  4%]
+tests/test_a_setup.py ..                                                 [ 14%]
+tests/test_data.py .F.                                                   [ 28%]
+tests/test_decision_tree.py ....FF                                       [ 57%]
+tests/test_experiment.py .F                                              [ 66%]
+tests/test_metrics.py .                                                  [ 71%]
+tests/test_numpy.py ..FFFF                                               [100%]
+=================================== FAILURES ===================================
+____________________________ test_train_test_split _____________________________
+>       assert np.isclose(np.mean(y_train), 0.5079365079365079), np.mean(y_train)
+E       AssertionError: np.float64(3.253026070763501)
+E       assert np.False_
+E        +  where np.False_ = <function isclose at 0x7fc95fb0cb30>(np.float64(3.253026070763501), 0.5079365079365079)
+E        +    where <function isclose at 0x7fc95fb0cb30> = np.isclose
+E        +    and   np.float64(3.253026070763501) = <function mean at 0x7fc95fb05af0>(array([[ 18.95949721,   1.0009311 ],\n       [ 24.91852886,   1.0009311 ],\n       [ 28.64292365,   1.74581006],\n       ...24767],\n       [-71.91573557,  65.80540037],\n       [-66.70158287,  51.65270019],\n       [-65.95670391,  53.88733706]]))
+E        +      where <function mean at 0x7fc95fb05af0> = np.mean
+tests/test_data.py:45: AssertionError
+___________________________ test_decision_tree_run1 ____________________________
+>       help_decision_tree_run(order)
+tests/test_decision_tree.py:161:
+>       left_accuracy = subset_accuracy(labels[left_mask])
+E       IndexError: boolean index did not match indexed array along axis 0; size of axis is 13 but size of corresponding boolean axis is 49
+src/decision_tree.py:236: IndexError
+___________________________ test_decision_tree_run2 ____________________________
+>       help_decision_tree_run(order)
+tests/test_decision_tree.py:172:
+>       left_accuracy = subset_accuracy(labels[left_mask])
+E       IndexError: boolean index did not match indexed array along axis 0; size of axis is 13 but size of corresponding boolean axis is 51
+src/decision_tree.py:236: IndexError
+_______________________________ test_comparisons _______________________________
+>           acc_a, learner_a = run(data_path_a, method_a, a["fraction"], **kwargs_a)
+tests/test_experiment.py:73:
+>       left_accuracy = subset_accuracy(labels[left_mask])
+E       IndexError: boolean index did not match indexed array along axis 0; size of axis is 7 but size of corresponding boolean axis is 57
+src/decision_tree.py:236: IndexError
+_____________________ test_numpy_replace_nans_out_of_place _____________________
+>       check_function(
+            "replace_nans_out_of_place",
+            1,
+            required=[("np.isnan", ), ("np.where")],
+            prohibited=["for ", "if ", ";", "eval"]
+        )
+tests/test_numpy.py:129:
+>               assert line.strip() == doc_line.strip(), f"Don't change the {i}th line of the docstring in function {function}()"
+E               AssertionError: Don't change the 0th line of the docstring in function replace_nans_out_of_place()
+E               assert '"""Replace N...t in-place"""' == '"""'
+E
+E                 - """
+E                 + """Replace NaN values with 0, not in-place"""
+tests/test_numpy.py:39: AssertionError
+_____________________________ test_numpy_find_mode _____________________________
+>       check_function(
+            "find_mode",
+            3,
+            required=[("np.argmax", ), ("np.unique", "np.bincount")],
+            prohibited=["for ", "if ", ";", "eval"]
+        )
+tests/test_numpy.py:152:
+>               assert line.strip() == doc_line.strip(), f"Don't change the {i}th line of the docstring in function {function}()"
+E               AssertionError: Don't change the 0th line of the docstring in function find_mode()
+E               assert '"""Find mode...ened array"""' == '"""'
+E
+E                 - """
+E                 + """Find mode of flattened array"""
+tests/test_numpy.py:39: AssertionError
+_______________________ test_numpy_flip_and_slice_matrix _______________________
+>       check_function(
+            "flip_and_slice_matrix",
+            2,
+            required=[],
+            prohibited=["for ", "if ", ";", "eval"]
+        )
+tests/test_numpy.py:175:
+>               assert line.strip() == doc_line.strip(), f"Don't change the {i}th line of the docstring in function {function}()"
+E               AssertionError: Don't change the 0th line of the docstring in function flip_and_slice_matrix()
+E               assert '"""Flip matr... third row"""' == '"""'
+E
+E                 - """
+E                 + """Flip matrix horizontally and take every third row"""
+tests/test_numpy.py:39: AssertionError
+_____________________ test_numpy_divide_matrix_along_rows ______________________
+>       check_function(
+            "divide_matrix_along_rows",
+            2,
+            required=[("reshape", "np.newaxis")],
+            prohibited=["for ", "if ", ";", "eval"]
+        )
+tests/test_numpy.py:197:
+>               assert line.strip() == doc_line.strip(), f"Don't change the {i}th line of the docstring in function {function}()"
+E               AssertionError: Don't change the 0th line of the docstring in function divide_matrix_along_rows()
+E               assert '"""Divide ma...tor values"""' == '"""'
+E
+E                 - """
+E                 + """Divide matrix rows by vector values"""
+tests/test_numpy.py:39: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_data.py::test_train_test_split - AssertionError: np.float64...
+FAILED tests/test_decision_tree.py::test_decision_tree_run1 - IndexError: boo...
+FAILED tests/test_decision_tree.py::test_decision_tree_run2 - IndexError: boo...
+FAILED tests/test_experiment.py::test_comparisons - IndexError: boolean index...
+FAILED tests/test_numpy.py::test_numpy_replace_nans_out_of_place - AssertionE...
+FAILED tests/test_numpy.py::test_numpy_find_mode - AssertionError: Don't chan...
+FAILED tests/test_numpy.py::test_numpy_flip_and_slice_matrix - AssertionError...
+FAILED tests/test_numpy.py::test_numpy_divide_matrix_along_rows - AssertionEr...
+========================= 8 failed, 13 passed in 3.37s =========================
