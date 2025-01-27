@@ -13,8 +13,6 @@ This project implements a **decision tree** for classification tasks in Python. 
   - Predefined depth limits for tree construction.
 - Supports weighted accuracy calculation for better splits.
 
-## Folder Structure
-project/ │ ├── data/ │ ├── xor-easy.csv │ ├── majority-rule.csv │ └── other datasets │ ├── src/ │ ├── decision_tree.py # Main implementation │ ├── metrics.py # Helper functions for accuracy, mode calculations, etc. │ ├── predict_mode.py # Comparison function │ ├── numpy_practice.py # Experimentation with NumPy │ └── data.py # Data preprocessing │ ├── tests/ │ └── test_decision_tree.py # Unit tests for the decision tree │ └── README.md # Project documentation
 
 ## Getting Started
 
@@ -23,50 +21,15 @@ project/ │ ├── data/ │ ├── xor-easy.csv │ ├── majority-r
 - Required libraries:
   - `numpy`
 
-Install dependencies:
-```bash
-pip install numpy
-Usage
-Clone the repository:
-bash
-Copy
-Edit
-git clone https://github.com/YOUR_USERNAME/REPO_NAME.git
-cd REPO_NAME
-Navigate to the src/ folder:
-bash
-Copy
-Edit
-cd src
-Run the decision tree implementation:
-bash
-Copy
-Edit
-python decision_tree.py
-Running Tests
-To ensure the implementation works correctly, run the test suite:
-
-bash
-Copy
-Edit
-python -m unittest discover tests/
-Example
-Here's an example of how the decision tree splits data and makes predictions:
-
-python
-Copy
-Edit
-from decision_tree import DecisionTree
-
-# Example dataset
+## Example dataset
 features = [[1, 2], [1, 3], [2, 3], [2, 4]]
 labels = [0, 0, 1, 1]
 
-# Create and train the decision tree
+## Create and train the decision tree
 tree = DecisionTree()
 tree.fit(features, labels)
 
-# Predict labels for new data
+## Predict labels for new data
 predictions = tree.predict([[1, 2], [2, 4]])
 print(predictions)  # Output: [0, 1]
 Results
@@ -79,10 +42,6 @@ Expand the decision tree to handle multiclass classification.
 Implement parallel processing for large datasets.
 License
 This project is licensed under the MIT License. See the LICENSE file for details.
-
-sql
-Copy
-Edit
 
 When you paste this into your `README.md` file and commit it to your GitHub repository, it will render properly with all formatting intact. Let me know if you have any other questions or need further adjustments!
 
