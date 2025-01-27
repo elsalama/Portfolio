@@ -40,6 +40,3 @@ Future Enhancements
 Add support for pruning to avoid overfitting.
 Expand the decision tree to handle multiclass classification.
 Implement parallel processing for large datasets.
-## License
-This project is licensed under the MIT License. See the LICENSE file for details.
-
